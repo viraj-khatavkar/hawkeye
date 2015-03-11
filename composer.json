@@ -1,0 +1,25 @@
+{
+    "name": "viraj/hawkeye",
+    "description": "A package for uploading files automatically in a nested md5 hash naming folder structure. A mini CDN for optimized file storage for Laravel.",
+    "authors": [
+        {
+            "name": "Viraj Khatavkar",
+            "email": "viraj.2438@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/http": "~5.0",
+        "illuminate/console": "~5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.3.*",
+        "mockery/mockery": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Viraj\\Hawkeye\\": "src/Hawkeye"
+        }
+    },
+    "minimum-stability": "stable"
+}
