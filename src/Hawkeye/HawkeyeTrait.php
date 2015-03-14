@@ -1,12 +1,16 @@
 <?php namespace Viraj\Hawkeye;
 
 use Viraj\Hawkeye\Exceptions\DiretoryNotCreatedException;
+use Viraj\Hawkeye\Exceptions\InvalidMd5HashException;
 
 trait HawkeyeTrait
 {
-    public function generateDirectoryPathFroName($hashedFileName)
+    public function generateDirectoryPathFromName($hashedFileName)
     {
-        return implode('/', str_split($hashedFileName, 3));
+        if ($this->isValidMd5Name($hashedFileName)) {
+            return implode('/', str_split($hashedFileName, 3));
+        }
+        throw new InvalidMd5HashException("The hashed File Name is not a valid  md5 hash.");
     }
 
     public function createDirectory($directoryPath)
@@ -18,4 +22,8 @@ trait HawkeyeTrait
         }//end if
     }
 
+    public function isValidMd5Name($fileName)
+    {
+        return strlen($fileName) == 32 && ctype_xdigit($fileName);
+    }
 }

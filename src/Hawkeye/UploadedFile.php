@@ -9,42 +9,48 @@ class UploadedFile extends \SplFileInfo
 
     private $fileRepo;
 
-    private $fileName;
+    private $hashedFileName;
 
     private $directoryPath;
 
     public function __construct($fileName, FileRepository $fileRepository)
     {
-        parent::__construct($_FILES[$fileName]["name"]);
+        parent::__construct($_FILES[$fileName]["tmp_name"]);
 
-        $this->temporaryFile = $_FILES[$fileName]["tmp_name"];
+        $this->originalFile = $fileName;
 
         $this->fileRepo = $fileRepository;
     }
 
     public function upload()
     {
-        if ($this->isUploadedFile($this->temporaryFile)) {
-            $this->fileName = $this->fileRepo->storeFileAndGetName();
-            $this->directoryPath = $this->generateDirectoryPathFroName($this->fileName);
+        if ($this->isUploadedFile($this)) {
+            $this->hashedFileName = $this->fileRepo->storeFileAndGetName();
+            $this->directoryPath = $this->generateDirectoryPathFromName($this->hashedFileName);
             $this->createDirectory($this->directoryPath);
-            $this->move($this->directoryPath, $this->fileName);
+            $this->move($this->directoryPath, $this->hashedFileName);
+            return true;
         } else {
             throw new InvalidUploadedFileException("Invalid Upload request. File not uploaded via HTTP POST method");
         }
     }
 
-    public function isUploadedFile($filename)
+    private function isUploadedFile($filename)
     {
         return is_uploaded_file($filename);
     }
 
-    public function move($path, $fileName)
+    private function move($path, $fileName)
     {
         $fullPathForFile = $path.'/'.$fileName.'.'.$this->getExtension();
 
         if (!move_uploaded_file($this->temporaryFile, $fullPathForFile)) {
             throw new FileNotUploadedException("Unable to move uploaded file to destination folder.");
         }
+    }
+
+    public function original()
+    {
+        return new \SplFileInfo($_FILES[$this->originalFile]["name"]);
     }
 }

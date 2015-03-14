@@ -14,9 +14,4 @@ class Hawkeye
 
         throw new InvalidFileException("File is corrupted or Invalid");
     }
-
-    public function isValidMd5Name($fileName)
-    {
-        return strlen($fileName) == 32 && ctype_xdigit($fileName);
-    }
 }
