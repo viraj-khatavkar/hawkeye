@@ -44,7 +44,7 @@ class UploadedFile extends \SplFileInfo
     {
         $fullPathForFile = $path.'/'.$fileName.'.'.$this->getExtension();
 
-        if (!move_uploaded_file($this->temporaryFile, $fullPathForFile)) {
+        if (!move_uploaded_file($this, $fullPathForFile)) {
             throw new FileNotUploadedException("Unable to move uploaded file to destination folder.");
         }
     }
