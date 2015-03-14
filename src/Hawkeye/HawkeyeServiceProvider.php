@@ -20,7 +20,7 @@ class HawkeyeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('hawkeye', function ($app) {
-            return new Hawkeye(new \Viraj\Hawkeye\FileRepository());
+            return new Hawkeye();
         });
     }
 }

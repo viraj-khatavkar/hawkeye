@@ -1,6 +1,7 @@
 {
     "name": "viraj/hawkeye",
     "description": "A package for uploading files automatically in a nested md5 hash naming folder structure. A mini CDN for optimized file storage for Laravel.",
+    "license": "MIT",
     "authors": [
         {
             "name": "Viraj Khatavkar",
