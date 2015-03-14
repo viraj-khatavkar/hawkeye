@@ -4,12 +4,22 @@ use Illuminate\Support\ServiceProvider;
 
 class HawkeyeServiceProvider extends ServiceProvider
 {
-    public $app;
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = false;
 
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
     public function register()
     {
         $this->app->bind('hawkeye', function ($app) {
-            return new Hawkeye($app);
+            return new Hawkeye(new \Viraj\Hawkeye\FileRepository());
         });
     }
 }

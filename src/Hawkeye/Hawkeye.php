@@ -1,12 +1,24 @@
 <?php namespace Viraj\Hawkeye;
 
-use Symfony\Component\Finder\SplFileInfo;
+use Viraj\Hawkeye\UploadedFile;
+use Viraj\Hawkeye\Exceptions\InvalidFileException;
 
 class Hawkeye
 {
-    public function validateFile($fileInstance)
+    private $_fileRepo;
+
+    public function __construct(FileRepository $fileRepository)
     {
-        return $fileInstance instanceof SplFileInfo;
+        $this->_fileRepo = $fileRepository;
+    }
+
+    public function request(string $filename)
+    {
+        if ($filename != '') {
+            return new UploadedFile($_FILES[$filename]["tmp_name"]);
+        }
+
+        throw new InvalidFileException;
     }
 
     public function isValidFileName($fileName)
