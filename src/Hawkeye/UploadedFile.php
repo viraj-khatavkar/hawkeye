@@ -24,13 +24,14 @@ class UploadedFile extends \SplFileInfo
 
     public function upload()
     {
-        if ($this->isUploadedFile($this)) {
+        if ($this->isUploadedFile($this->temporaryFile)) {
             $this->fileName = $this->fileRepo->storeFileAndGetName();
             $this->directoryPath = $this->generateDirectoryPathFroName($this->fileName);
             $this->createDirectory($this->directoryPath);
             $this->move($this->directoryPath, $this->fileName);
+        } else {
+            throw new InvalidUploadedFileException("Invalid Upload request. File not uploaded via HTTP POST method");
         }
-        throw new InvalidUploadedFileException("Invalid Upload request. File not uploaded via HTTP POST method");
     }
 
     public function isUploadedFile(UploadedFile $filename)
