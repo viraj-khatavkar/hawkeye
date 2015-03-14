@@ -3,7 +3,7 @@
 class FileRepository implements FileRepositoryInterface
 {
 
-    public function storeFile()
+    public function storeFileAndGetName()
     {
 
     }

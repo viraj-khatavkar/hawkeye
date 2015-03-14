@@ -5,23 +5,17 @@ use Viraj\Hawkeye\Exceptions\InvalidFileException;
 
 class Hawkeye
 {
-    private $_fileRepo;
 
-    public function __construct(FileRepository $fileRepository)
-    {
-        $this->_fileRepo = $fileRepository;
-    }
-
-    public function request($filename)
+    public function request(string $filename)
     {
         if ($filename != '') {
-            return new UploadedFile($_FILES[$filename]["tmp_name"]);
+            return new UploadedFile($filename, new FileRepository());
         }
 
-        throw new InvalidFileException('Invalid');
+        throw new InvalidFileException("File is corrupted or Invalid");
     }
 
-    public function isValidFileName($fileName)
+    public function isValidMd5Name($fileName)
     {
         return strlen($fileName) == 32 && ctype_xdigit($fileName);
     }

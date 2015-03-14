@@ -16,6 +16,7 @@ class HawkeyeServiceProvider extends ServiceProvider
      *
      * @return void
      */
+
     public function register()
     {
         $this->app->bind('hawkeye', function ($app) {
