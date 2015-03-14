@@ -6,7 +6,7 @@ use Viraj\Hawkeye\Exceptions\InvalidFileException;
 class Hawkeye
 {
 
-    public function request(string $filename)
+    public function request($filename)
     {
         if ($filename != '') {
             return new UploadedFile($filename, new FileRepository());

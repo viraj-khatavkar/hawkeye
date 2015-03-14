@@ -2,5 +2,5 @@
 
 interface FileRepositoryInterface
 {
-    public function storeFile();
+    public function storeFileAndGetName();
 }
