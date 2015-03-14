@@ -12,13 +12,13 @@ class Hawkeye
         $this->_fileRepo = $fileRepository;
     }
 
-    public function request(string $filename)
+    public function request($filename)
     {
         if ($filename != '') {
             return new UploadedFile($_FILES[$filename]["tmp_name"]);
         }
 
-        throw new InvalidFileException;
+        throw new InvalidFileException('Invalid');
     }
 
     public function isValidFileName($fileName)

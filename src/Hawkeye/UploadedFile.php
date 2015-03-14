@@ -10,10 +10,10 @@ class UploadedFile extends \SplFileInfo
         if ($this->isUploadedFile($this)) {
             echo "yes...!!!";
         }
-        throw new InvalidUploadedFileException;
+        throw new InvalidUploadedFileException("Invalid File");
     }
 
-    public function isUploadedFile(File $filename)
+    public function isUploadedFile(UploadedFile $filename)
     {
         return is_uploaded_file($filename);
     }
