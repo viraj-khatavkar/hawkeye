@@ -13,7 +13,7 @@ class UploadedFile extends \SplFileInfo
 
     private $directoryPath;
 
-    public function __construct(string $fileName, FileRepository $fileRepository)
+    public function __construct($fileName, FileRepository $fileRepository)
     {
         parent::__construct($_FILES[$fileName]["name"]);
 
