@@ -13,7 +13,7 @@ class UploadedFile extends \SplFileInfo
         throw new InvalidUploadedFileException("Invalid File");
     }
 
-    public function isUploadedFile(UploadedFile $filename)
+    public function isUploadedFile($filename)
     {
         return is_uploaded_file($filename);
     }
