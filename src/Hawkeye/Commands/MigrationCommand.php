@@ -1,4 +1,4 @@
-<?php namespace Viraj\Hawkeye\Commands;
+<?php namespace Viraj\Hawkeye;
 
 use Illuminate\Console\Command;
 

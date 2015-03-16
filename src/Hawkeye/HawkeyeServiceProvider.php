@@ -30,7 +30,7 @@ class HawkeyeServiceProvider extends ServiceProvider
         });
 
         $this->app->bindShared('command.hawkeye.migration', function ($app) {
-            return new \Viraj\Hawkeye\Commands\MigrationCommand();
+            return new MigrationCommand();
         });
     }
 
