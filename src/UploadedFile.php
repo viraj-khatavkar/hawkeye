@@ -1,5 +1,6 @@
 <?php namespace Viraj\Hawkeye;
 
+use Illuminate\Support\Facades\Config;
 use Viraj\Hawkeye\Exceptions\FileNotUploadedException;
 use Viraj\Hawkeye\Exceptions\InvalidUploadedFileException;
 
@@ -19,13 +20,23 @@ class UploadedFile extends \SplFileInfo
 
         $this->originalFile = $fileName;
 
+        $this->originalFileObject = $this->original();
+
         $this->fileRepo = $fileRepository;
     }
 
     public function upload()
     {
         if ($this->isUploadedFile($this)) {
-            $this->hashedFileName = $this->fileRepo->storeFileAndGetName();
+            $fileData = [
+                'name' => $this->originalFileObject->getFilename(),
+                'extension' => $this->originalFileObject->getExtension(),
+                'size' => $this->originalFileObject->getSize(),
+                'ip' => $_SERVER['REMOTE_ADDR'],
+                'uploaded_at' => date('Y-m-d H:i:s')
+            ];
+
+            $this->hashedFileName = $this->fileRepo->storeFileAndGetName($fileData);
             $this->directoryPath = $this->generateDirectoryPathFromName($this->hashedFileName);
             $this->createDirectory($this->directoryPath);
             $this->move($this->directoryPath, $this->hashedFileName);
@@ -42,7 +53,7 @@ class UploadedFile extends \SplFileInfo
 
     private function move($path, $fileName)
     {
-        $fullPathForFile = $path.'/'.$fileName.'.'.$this->original()->getExtension();
+        $fullPathForFile = "files/".$path.'/'.$fileName.'.'.$this->original()->getExtension();
 
         if (!move_uploaded_file($this, $fullPathForFile)) {
             throw new FileNotUploadedException("Unable to move uploaded file to destination folder.");

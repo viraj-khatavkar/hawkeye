@@ -2,5 +2,5 @@
 
 interface FileRepositoryInterface
 {
-    public function storeFileAndGetName();
+    public function storeFileAndGetName($fileData);
 }

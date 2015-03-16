@@ -11,6 +11,12 @@ class HawkeyeServiceProvider extends ServiceProvider
      */
     protected $defer = false;
 
+    public function boot()
+    {
+        // Register commands
+        $this->commands('command.hawkeye.migration');
+    }
+
     /**
      * Register the service provider.
      *
@@ -22,5 +28,21 @@ class HawkeyeServiceProvider extends ServiceProvider
         $this->app->bind('hawkeye', function ($app) {
             return new Hawkeye();
         });
+
+        $this->app->bindShared('command.hawkeye.migration', function ($app) {
+            return new MigrationCommand();
+        });
+    }
+
+    /**
+     * Get the services provided.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return array(
+            'command.hawkeye.migration'
+        );
     }
 }
