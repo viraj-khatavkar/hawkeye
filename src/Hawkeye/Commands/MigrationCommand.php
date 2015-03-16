@@ -25,7 +25,7 @@ class MigrationCommand extends Command
      */
     public function fire()
     {
-        $filesTable = 'hawkeye_table';
+        $filesTable = 'files';
 
 
         $this->laravel->view->addNamespace('hawkeye', substr(__DIR__, 0, -8).'views');

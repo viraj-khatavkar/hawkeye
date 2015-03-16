@@ -8,7 +8,7 @@ class FileRepository implements FileRepositoryInterface
 
     public function storeFileAndGetName($fileData)
     {
-        $id = DB::table('users')->insertGetId($fileData);
+        $id = DB::table('files')->insertGetId($fileData);
 
         return md5($id);
     }
