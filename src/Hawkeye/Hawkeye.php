@@ -4,6 +4,7 @@ use Viraj\Hawkeye\Exceptions\InvalidFileException;
 
 class Hawkeye
 {
+    use HawkeyeTrait;
 
     public function request($filename)
     {
