@@ -31,7 +31,7 @@ class UploadedFile extends \SplFileInfo
             $fileData = [
                 'name' => $this->originalFileObject->getFilename(),
                 'extension' => $this->originalFileObject->getExtension(),
-                'size' => $this->originalFileObject->getSize(),
+                'size' => $_FILES[$this->originalFile]["size"],
                 'ip' => $_SERVER['REMOTE_ADDR'],
                 'uploaded_at' => date('Y-m-d H:i:s')
             ];
