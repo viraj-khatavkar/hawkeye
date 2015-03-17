@@ -40,7 +40,7 @@ class UploadedFile extends \SplFileInfo
             $this->directoryPath = $this->generateDirectoryPathFromName($this->hashedFileName);
             $this->createDirectory($this->directoryPath);
             $this->move($this->directoryPath, $this->hashedFileName);
-            return $this->hashedFileName;
+            return $this->hashedFileName.".".$this->originalFileObject->getExtension();
         } else {
             throw new InvalidUploadedFileException("Invalid Upload request. File not uploaded via HTTP POST method");
         }
