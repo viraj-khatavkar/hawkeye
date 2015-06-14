@@ -8,11 +8,11 @@ class UploadedFile extends \SplFileInfo
 {
     use HawkeyeTrait;
 
+    /**
+     * @var FileRepository
+     */
     private $fileRepo;
 
-    private $hashedFileName;
-
-    private $directoryPath;
 
     public function __construct($fileName, FileRepository $fileRepository)
     {
@@ -25,6 +25,18 @@ class UploadedFile extends \SplFileInfo
         $this->fileRepo = $fileRepository;
     }
 
+    /**
+     * Returns hashed file name of uploaded file.
+     *
+     * The function checks whether the file is a correct uploaded file via HTTP POST method and
+     * if the file is not uploaded via HTTP POST, it throws InvalidUploadedFileException and
+     * if file is uploaded via HTTP POST, it uploads file and returns hashed file name.
+     *
+     * @throws Exceptions\DiretoryNotCreatedException
+     * @throws Exceptions\InvalidMd5HashException
+     * @throws FileNotUploadedException
+     * @throws InvalidUploadedFileException
+     */
     public function upload()
     {
         if ($this->isUploadedFile($this)) {
@@ -36,21 +48,36 @@ class UploadedFile extends \SplFileInfo
                 'uploaded_at' => date('Y-m-d H:i:s')
             ];
 
-            $this->hashedFileName = $this->fileRepo->storeFileAndGetName($fileData);
-            $this->directoryPath = $this->generateDirectoryPathFromName($this->hashedFileName);
-            $this->createDirectory($this->directoryPath);
+            $this->createDirectory(
+                $this->generateDirectoryPathFromName(
+                    $this->fileRepo->storeFileAndGetName($fileData)
+                )
+            );
             $this->move($this->directoryPath, $this->hashedFileName);
-            return $this->hashedFileName.".".$this->originalFileObject->getExtension();
+            return $this->fileRepo->fileName.".".$this->originalFileObject->getExtension();
         } else {
             throw new InvalidUploadedFileException("Invalid Upload request. File not uploaded via HTTP POST method");
         }
     }
 
+    /**
+     * Returns whether the file was uploaded via HTTP POST
+     *
+     * @param $filename
+     * @return bool
+     */
     private function isUploadedFile($filename)
     {
         return is_uploaded_file($filename);
     }
 
+    /**
+     * Moves the uploaded file to a desired location
+     *
+     * @param $path
+     * @param $fileName
+     * @throws FileNotUploadedException
+     */
     private function move($path, $fileName)
     {
         $fullPathForFile = $path.'/'.$fileName.'.'.$this->original()->getExtension();
@@ -60,6 +87,11 @@ class UploadedFile extends \SplFileInfo
         }
     }
 
+    /**
+     * Returns a high-level object oriented interface to information for original file.
+     *
+     * @return \SplFileInfo
+     */
     public function original()
     {
         return new \SplFileInfo($_FILES[$this->originalFile]["name"]);

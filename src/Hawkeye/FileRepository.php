@@ -6,11 +6,18 @@ use Illuminate\Support\Facades\DB;
 class FileRepository implements FileRepositoryInterface
 {
 
+    /**
+     * MD5 hash for id
+     *
+     * @var
+     */
+    public $fileName;
+
     public function storeFileAndGetName($fileData)
     {
-        $id = DB::table('files')->insertGetId($fileData);
+        $this->fileName = md5(DB::table('files')->insertGetId($fileData));
 
-        return md5($id);
+        return $this->fileName;
     }
 
 }
