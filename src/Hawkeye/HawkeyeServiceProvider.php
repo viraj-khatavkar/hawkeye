@@ -17,7 +17,7 @@ class HawkeyeServiceProvider extends ServiceProvider
         $this->commands('command.hawkeye.migration');
 
         $this->publishes([
-            __DIR__.'config.php' => config_path('hawkeye.php'),
+            __DIR__.'/config.php' => config_path('hawkeye.php'),
         ]);
     }
 
