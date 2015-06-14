@@ -8,7 +8,7 @@ trait HawkeyeTrait
     public function generateDirectoryPathFromName($hashedFileName)
     {
         if ($this->isValidMd5Name($hashedFileName)) {
-            return "files/".implode('/', str_split(substr($hashedFileName, 0, 30), 3));
+            return config('hawkeye.hawkeye_base_path')."files/".implode('/', str_split(substr($hashedFileName, 0, 30), 3));
         }
         throw new InvalidMd5HashException("The hashed File Name is not a valid  md5 hash.");
     }
