@@ -20,10 +20,29 @@ to your composer.json. Then run `composer install` or `composer update`.
 
 Then in your `config/app.php` add 
 
-    ''Viraj\Hawkeye\HawkeyeServiceProvider'',
+    'Viraj\Hawkeye\HawkeyeServiceProvider',
     
 in the providers array and
 
-    ''Hawkeye' 	=> 'Viraj\Hawkeye\HawkeyeFacade','
+    'Hawkeye' 	=> 'Viraj\Hawkeye\HawkeyeFacade',
     
 to the `aliases` array.
+
+## Configuration
+
+You need to publish the configuration for this package to further customize the storage path of files. 
+Just use `php artisan vendor:publish` and a `hawkeye.php` file will be created in your `app/config` directory.
+
+## Create Migration
+
+Now generate the Hawkeye migration:
+
+`php artisan hawkeye:migration`
+It will generate the `<timestamp>_entrust_setup_tables.php` migration. You may now run it with the artisan migrate command:
+
+`php artisan migrate`
+After the migration, one new table will be present:
+
+`files` — stores file records and its meta data
+
+
