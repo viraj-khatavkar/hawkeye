@@ -43,7 +43,7 @@ For e.g. if you want to have your files in `public\images` directory then,
     
 or if, you want to store them outside public directory, let's suppose in `storage/images`, then give the path to directory
 
-    'hawkeye_base_path' => '../storage/',
+    'hawkeye_base_path' => '../storage/images/',
 
 Hawkeye will store the files in appropriate directory.
 
@@ -102,7 +102,7 @@ array (size=2)
 
 And it will give a string for single file.
 
-    c9f0f895fb98ab9159f51fd0297e236d.docx
+    'c9f0f895fb98ab9159f51fd0297e236d.docx'
 
 ## License
 
