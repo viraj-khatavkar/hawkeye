@@ -25,7 +25,7 @@ class MigrationCommand extends Command
      */
     public function fire()
     {
-        $filesTable = 'files';
+        $filesTable = 'hawkeye';
 
         $this->laravel->view->addNamespace('hawkeye', substr(__DIR__, 0, -8).'views');
 
@@ -35,8 +35,6 @@ class MigrationCommand extends Command
 
         $this->comment($message);
         $this->line('');
-
-        $filesTable = $this->ask('What should be the database table name for storing files ?');
 
         if ($this->confirm("Proceed with the migration creation? [Yes|no]")) {
             $this->line('');
