@@ -18,15 +18,6 @@ class Hawkeye
         throw new InvalidFileException("File is corrupted or Invalid");
     }
 
-    public function make($filename)
-    {
-        if ($filename != '' && file_exists($filename)) {
-            return new File($filename);
-        }
-
-        throw new InvalidFileException("File is corrupted or Invalid");
-    }
-
     public function upload($filename)
     {
         $this->normalize($_FILES[$filename])
@@ -37,6 +28,8 @@ class Hawkeye
 
             $files[] = $upload->upload();
         }
+
+        return $files;
     }
 
     private function normalize($argument)

@@ -38,7 +38,7 @@ Just use `php artisan vendor:publish` and a `hawkeye.php` file will be created i
 Now generate the Hawkeye migration:
 
 `php artisan hawkeye:migration`
-It will generate the `<timestamp>_entrust_setup_tables.php` migration. You may now run it with the artisan migrate command:
+It will generate the `<timestamp>_hawkeye_setup_tables.php` migration. You may now run it with the artisan migrate command:
 
 `php artisan migrate`
 After the migration, one new table will be present:

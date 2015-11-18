@@ -1,7 +1,6 @@
 <?php
 namespace Viraj\Hawkeye;
 
-use Illuminate\Support\Facades\Config;
 use SplFileInfo;
 use Viraj\Hawkeye\Exceptions\FileNotUploadedException;
 use Viraj\Hawkeye\Exceptions\InvalidUploadedFileException;
@@ -33,7 +32,7 @@ class Upload
             $fileData = [
                 'name' => $this->originalFile->getFilename(),
                 'extension' => $this->originalFile->getExtension(),
-                'size' => $this->originalFile->getSize(),
+                'size' => $this->uploadedFile->getSize(),
                 'ip' => $_SERVER['REMOTE_ADDR'],
                 'uploaded_at' => date('Y-m-d H:i:s')
             ];
@@ -69,9 +68,9 @@ class Upload
      */
     private function move($path, $fileName)
     {
-        $fullPathForFile = $path . '/' . $fileName . '.' . $this->original()->getExtension();
+        $fullPathForFile = $path . '/' . $fileName . '.' . $this->originalFile->getExtension();
 
-        if (!move_uploaded_file($this, $fullPathForFile)) {
+        if (!move_uploaded_file($this->uploadedFile, $fullPathForFile)) {
             throw new FileNotUploadedException("Unable to move uploaded file to destination folder.");
         }
     }

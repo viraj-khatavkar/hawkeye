@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'hawkeye_base_path' => '../public/',
+    'hawkeye_base_path' => '',
 ];
