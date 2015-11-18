@@ -15,7 +15,7 @@ class FileRepository implements FileRepositoryInterface
 
     public function storeFileAndGetName($fileData)
     {
-        $this->fileName = md5(DB::table('files')->insertGetId($fileData));
+        $this->fileName = md5(DB::table(config('hawkeye.hawkeye_table'))->insertGetId($fileData));
 
         return $this->fileName;
     }
