@@ -52,12 +52,13 @@ Hawkeye will store the files in appropriate directory.
 Now generate the Hawkeye migration:
 
 `php artisan hawkeye:migration`
+
 It will generate the `<timestamp>_hawkeye_setup_tables.php` migration. You may now run it with the artisan migrate command:
 
 `php artisan migrate`
 After the migration, one new table will be present:
 
-`files` — stores file records and its meta data
+`hawkeye` — stores file records and its meta data
 
 ## Upload Files using Hawkeye
 
@@ -84,7 +85,6 @@ In your controller, you can write
 
 use Viraj\Hawkeye\HawkeyeFacade as Hawkeye;
 
-
 public function uploadFile()
 {
     $files = Hawkeye::upload('file_upload');
@@ -92,14 +92,17 @@ public function uploadFile()
 }
 ```
 
-The `upload` method will give you an array of file names (md5 hashed names). 
+The `upload` method will give you an array of file names (md5 hashed names) for multiple files. 
 
 ```php
-
 array (size=2)
   0 => string 'c9f0f895fb98ab9159f51fd0297e236d.docx' (length=37)
   1 => string '45c48cce2e2d7fbdea1afc51c7c6ad26.pdf' (length=36)
 ```
+
+And it will give a string for single file.
+
+    c9f0f895fb98ab9159f51fd0297e236d.docx
 
 ## License
 
