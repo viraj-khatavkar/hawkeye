@@ -32,10 +32,6 @@ class UploadedFile extends \SplFileInfo
      * if the file is not uploaded via HTTP POST, it throws InvalidUploadedFileException and
      * if file is uploaded via HTTP POST, it uploads file and returns hashed file name.
      *
-     * @throws Exceptions\DiretoryNotCreatedException
-     * @throws Exceptions\InvalidMd5HashException
-     * @throws FileNotUploadedException
-     * @throws InvalidUploadedFileException
      */
     public function upload()
     {
