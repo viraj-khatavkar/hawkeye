@@ -14,7 +14,7 @@ The above hashed name will be used to create a directory as
 
 In order to install Hawkeye, just add 
 
-    "viraj/hawkeye": "1.0.*"
+    "viraj/hawkeye": "dev-master"
 
 to your composer.json. Then run `composer install` or `composer update`.
 
