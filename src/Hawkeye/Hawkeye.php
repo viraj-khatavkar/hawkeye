@@ -29,6 +29,8 @@ class Hawkeye
             $files[] = $upload->upload();
         }
 
+        if (count($files) == 1)
+            return $files[0];
         return $files;
     }
 
