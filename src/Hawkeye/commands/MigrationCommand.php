@@ -36,6 +36,8 @@ class MigrationCommand extends Command
         $this->comment($message);
         $this->line('');
 
+        $filesTable = $this->ask('What should be the database table name for storing files ?');
+
         if ($this->confirm("Proceed with the migration creation? [Yes|no]")) {
             $this->line('');
 
