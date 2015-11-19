@@ -33,13 +33,17 @@ to the `aliases` array.
 You need to publish the configuration for this package to further customize the storage path of files. 
 Just use `php artisan vendor:publish` and a `hawkeye.php` file will be created in your `app/config` directory.
 
+### Base directory configuration
+
 Setup the base directory in `config/hawkeye.php` where your files will be stored.
 
     'hawkeye_base_path' => 'path/to/directory',
 
-For e.g. if you want to have your files in `public\images` directory then,
+For e.g. if you want to have your files in `public/images` directory then,
 
     'hawkeye_base_path' => 'images/',
+    
+#### Note: Don't forget the forward slash after `images`
     
 or if, you want to store them outside public directory, let's suppose in `storage/images`, then give the path to directory
 
@@ -47,6 +51,25 @@ or if, you want to store them outside public directory, let's suppose in `storag
 
 Hawkeye will store the files in appropriate directory.
 
+### Image Resizing configuration
+
+You can configure Hawkeye to resize uploaded images in various dimensions you require. It comes with some default image dimensions for resizing images according to industry standards, but you are free to configure according to your needs. If you need some different values, edit the values accordingly in  `config/hawkeye.php` :
+
+    'images' => [
+        'banner' => '1200x800',
+        'thumbnail' => '300x200',
+        'large' => '600x500',
+    ],
+    
+If you want to stick with above configuration and also add some custom configuration for your app, you can do that as well. Just add the needed dimension and name for your configuration.
+
+    'images' => [
+        'banner' => '1200x800',
+        'thumbnail' => '300x200',
+        'large' => '600x500',
+        'your-configuration' => '800x600',
+    ],
+    
 ## Create Migration
 
 Now generate the Hawkeye migration:
@@ -78,6 +101,8 @@ After the migration, one new table will be present:
 
 ### FileController.php
 
+#### Uploading and resizing files
+
 In your controller, you can write
 
 ```php
@@ -87,22 +112,86 @@ use Viraj\Hawkeye\HawkeyeFacade as Hawkeye;
 
 public function uploadFile()
 {
-    $files = Hawkeye::upload('file_upload');
+    $files = Hawkeye::upload('file_upload')->scaleImages()->get();
     var_dump($files);
 }
 ```
 
-The `upload` method will give you an array of file names (md5 hashed names) for multiple files. 
+The `upload` method will give you a nested array of file names (md5 hashed names) for multiple files.
 
 ```php
 array (size=2)
-  0 => string 'c9f0f895fb98ab9159f51fd0297e236d.docx' (length=37)
-  1 => string '45c48cce2e2d7fbdea1afc51c7c6ad26.pdf' (length=36)
+  'list' => 
+    array (size=8)
+      0 => string 'd67d8ab4f4c10bf22aa353e27879133c.png' (length=36)
+      1 => string 'd645920e395fedad7bbbed0eca3fe2e0.png' (length=36)
+      2 => string 'd67d8ab4f4c10bf22aa353e27879133c_1200_800.png' (length=45)
+      3 => string 'd67d8ab4f4c10bf22aa353e27879133c_300_200.png' (length=44)
+      4 => string 'd67d8ab4f4c10bf22aa353e27879133c_600_500.png' (length=44)
+      5 => string 'd645920e395fedad7bbbed0eca3fe2e0_1200_800.png' (length=45)
+      6 => string 'd645920e395fedad7bbbed0eca3fe2e0_300_200.png' (length=44)
+      7 => string 'd645920e395fedad7bbbed0eca3fe2e0_600_500.png' (length=44)
+  'separated' => 
+    array (size=2)
+      0 => 
+        array (size=4)
+          'original' => string 'd67d8ab4f4c10bf22aa353e27879133c.png' (length=36)
+          'banner' => string 'd67d8ab4f4c10bf22aa353e27879133c_1200_800.png' (length=45)
+          'thumbnail' => string 'd67d8ab4f4c10bf22aa353e27879133c_300_200.png' (length=44)
+          'large' => string 'd67d8ab4f4c10bf22aa353e27879133c_600_500.png' (length=44)
+      1 => 
+        array (size=4)
+          'original' => string 'd645920e395fedad7bbbed0eca3fe2e0.png' (length=36)
+          'banner' => string 'd645920e395fedad7bbbed0eca3fe2e0_1200_800.png' (length=45)
+          'thumbnail' => string 'd645920e395fedad7bbbed0eca3fe2e0_300_200.png' (length=44)
+          'large' => string 'd645920e395fedad7bbbed0eca3fe2e0_600_500.png' (length=44)
 ```
 
-And it will give a string for single file.
+The above response has 2 parameters:
 
-    'c9f0f895fb98ab9159f51fd0297e236d.docx'
+`list` - It has a list of all files that have been uploaded and resized.
+`separated` - It has a segregated/separated list of all uploaded files and resized images as well, if any!
+
+Sometimes, you don't want to resize your images in all the types. You can specify the same in `scaleImages()` method parameter as follows:
+
+```php
+<?php
+
+use Viraj\Hawkeye\HawkeyeFacade as Hawkeye;
+
+public function uploadFile()
+{
+    $files = Hawkeye::upload('file_upload')->scaleImages(['banneer', 'large'])->get();
+    var_dump($files);
+}
+```
+
+The above code will just resize your images in 2 types `banner` and `large`. The response will be:
+
+```php
+array (size=2)
+  'list' => 
+    array (size=6)
+      0 => string 'a5bfc9e07964f8dddeb95fc584cd965d.png' (length=36)
+      1 => string 'a5771bce93e200c36f7cd9dfd0e5deaa.png' (length=36)
+      2 => string 'a5bfc9e07964f8dddeb95fc584cd965d_1200_800.png' (length=45)
+      3 => string 'a5bfc9e07964f8dddeb95fc584cd965d_600_500.png' (length=44)
+      4 => string 'a5771bce93e200c36f7cd9dfd0e5deaa_1200_800.png' (length=45)
+      5 => string 'a5771bce93e200c36f7cd9dfd0e5deaa_600_500.png' (length=44)
+  'separated' => 
+    array (size=2)
+      0 => 
+        array (size=3)
+          'original' => string 'a5bfc9e07964f8dddeb95fc584cd965d.png' (length=36)
+          'banner' => string 'a5bfc9e07964f8dddeb95fc584cd965d_1200_800.png' (length=45)
+          'large' => string 'a5bfc9e07964f8dddeb95fc584cd965d_600_500.png' (length=44)
+      1 => 
+        array (size=3)
+          'original' => string 'a5771bce93e200c36f7cd9dfd0e5deaa.png' (length=36)
+          'banner' => string 'a5771bce93e200c36f7cd9dfd0e5deaa_1200_800.png' (length=45)
+          'large' => string 'a5771bce93e200c36f7cd9dfd0e5deaa_600_500.png' (length=44)
+```
+
 
 ## License
 
