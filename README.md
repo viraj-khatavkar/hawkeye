@@ -170,7 +170,7 @@ The above response has 2 parameters:
 
 `separated` - It has a segregated/separated list of all uploaded files and resized images as well, if any!
 
-Sometimes, you don't want to resize your images in all the types specified in configuration. Don't worry, Hawkeye has a provision for that as well. Specify the name of `imagetypes` you want the uploaded images to be resized into in `resize()` method and Hawkeye will resize into those types only.
+Sometimes, you don't want to resize your images in all the types specified in configuration. Don't worry, Hawkeye has a provision for that as well. Specify the name of `image types` you want the uploaded images to be resized into in `resize()` method and Hawkeye will resize into those types only.
 
 ```php
 <?php
@@ -179,7 +179,7 @@ use Viraj\Hawkeye\HawkeyeFacade as Hawkeye;
 
 public function uploadFile()
 {
-    $files = Hawkeye::upload('file_upload')->resize(['banneer', 'large'])->get();
+    $files = Hawkeye::upload('file_upload')->resize(['banner', 'large'])->get();
     var_dump($files);
 }
 ```
@@ -210,7 +210,7 @@ array (size=2)
           'large' => string 'a5771bce93e200c36f7cd9dfd0e5deaa_600_500.png' (length=44)
 ```
 
-## generateFullImagePath()
+## generateFullImagePathFor()
 
 This function returns the full image path for a particular file name (hashed) with extension.
 
