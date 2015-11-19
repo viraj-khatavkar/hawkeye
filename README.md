@@ -112,7 +112,7 @@ use Viraj\Hawkeye\HawkeyeFacade as Hawkeye;
 
 public function uploadFile()
 {
-    $files = Hawkeye::upload('file_upload')->scaleImages()->get();
+    $files = Hawkeye::upload('file_upload')->resize()->get();
     var_dump($files);
 }
 ```
@@ -161,7 +161,7 @@ use Viraj\Hawkeye\HawkeyeFacade as Hawkeye;
 
 public function uploadFile()
 {
-    $files = Hawkeye::upload('file_upload')->scaleImages(['banneer', 'large'])->get();
+    $files = Hawkeye::upload('file_upload')->resize(['banneer', 'large'])->get();
     var_dump($files);
 }
 ```
