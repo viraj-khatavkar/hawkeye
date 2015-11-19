@@ -87,13 +87,14 @@ class Hawkeye
             foreach (config('hawkeye.images') as $key => $value) {
                 $dimensions = explode('x', $value);
 
-                $scaled_image = $directoryPath . '/' . $hash . '_' . $dimensions[0] . '_' . $dimensions[1] . '.' . $file_meta[1];
+                $scaled_image_name = $hash . '_' . $dimensions[0] . '_' . $dimensions[1] . '.' . $file_meta[1];
+                $scaled_image_path = $directoryPath . '/' . $scaled_image_name;
 
                 Image::make($file_name)
                      ->resize($dimensions[0], $dimensions[1])
-                     ->save($scaled_image);
+                     ->save($scaled_image_path);
 
-                $this->uploadedFiles[$count][$key] = $scaled_image;
+                $this->uploadedFiles[$count][$key] = $scaled_image_name;
             }
             $count++;
         }
