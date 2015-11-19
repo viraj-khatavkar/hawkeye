@@ -28,6 +28,19 @@ in the providers array and
     
 to the `aliases` array.
 
+## Create Migration
+
+Now generate the Hawkeye migration:
+
+`php artisan hawkeye:migration`
+
+It will generate the `<timestamp>_hawkeye_setup_tables.php` migration. You may now run it with the artisan migrate command:
+
+`php artisan migrate`
+After the migration, one new table will be present:
+
+`hawkeye` — stores file records and its meta data
+
 ## Configuration
 
 You need to publish the configuration for this package to further customize the storage path of files. 
@@ -69,19 +82,6 @@ If you want to stick with above configuration and also add some custom configura
         'large' => '600x500',
         'your-configuration' => '800x600',
     ],
-    
-## Create Migration
-
-Now generate the Hawkeye migration:
-
-`php artisan hawkeye:migration`
-
-It will generate the `<timestamp>_hawkeye_setup_tables.php` migration. You may now run it with the artisan migrate command:
-
-`php artisan migrate`
-After the migration, one new table will be present:
-
-`hawkeye` — stores file records and its meta data
 
 ## Upload Files using Hawkeye
 
@@ -117,7 +117,7 @@ public function uploadFile()
 }
 ```
 
-The `upload` method will give you a nested array of file names (md5 hashed names) for multiple files.
+The above code will upload, resize (to all the image types specified in configuration) and give you a nested array of file names (md5 hashed names):
 
 ```php
 array (size=2)
@@ -152,7 +152,7 @@ The above response has 2 parameters:
 `list` - It has a list of all files that have been uploaded and resized.
 `separated` - It has a segregated/separated list of all uploaded files and resized images as well, if any!
 
-Sometimes, you don't want to resize your images in all the types. You can specify the same in `scaleImages()` method parameter as follows:
+Sometimes, you don't want to resize your images in all the types. Don't worry, Hawkeye does that too. Specify the name of `imagetypes` you want the uploaded images to be resized into in `resize()` method and Hawkeye will resize into those types only.
 
 ```php
 <?php
@@ -166,7 +166,7 @@ public function uploadFile()
 }
 ```
 
-The above code will just resize your images in 2 types `banner` and `large`. The response will be:
+The above code will just resize your images in only 2 types - `banner` and `large`. The response will be:
 
 ```php
 array (size=2)
@@ -192,7 +192,27 @@ array (size=2)
           'large' => string 'a5771bce93e200c36f7cd9dfd0e5deaa_600_500.png' (length=44)
 ```
 
+## generateFullImagePath()
 
+This function returns the full image path for a particular hashed name with extension. It works as follows:
+
+### Example 1
+
+```
+    Hawkeye::generateFullImagePathFor('45c48cce2e2d7fbdea1afc51c7c6ad26_1200_200.jpg')
+    
+    Output:
+    "images/45c/48c/ce2/e2d/7fb/dea/1af/c51/c7c/6ad/45c48cce2e2d7fbdea1afc51c7c6ad26_1200_200.jpg"
+```
+
+### Example 2
+
+```
+    Hawkeye::generateFullImagePathFor('45c48cce2e2d7fbdea1afc51c7c6ad26.jpg')
+    
+    Output:
+    "images/45c/48c/ce2/e2d/7fb/dea/1af/c51/c7c/6ad/45c48cce2e2d7fbdea1afc51c7c6ad26.jpg"
+```
 ## License
 
 Hawkeye is free software distributed under the terms of the MIT license
