@@ -38,8 +38,8 @@ class Hawkeye
 
             $name = $upload->upload();
 
-            $this->uploadedFiles['separated'][]['original'] = $name;
             $this->uploadedFiles['list'][$count] = $name;
+            $this->uploadedFiles['separated'][]['original'] = $name;
 
             $count++;
         }
@@ -83,8 +83,18 @@ class Hawkeye
         return $this;
     }
 
-    public function scaleImages()
+    public function scaleImages($options = [])
     {
+        if (count($options) > 0) {
+            foreach (config('hawkeye.images') as $key => $value) {
+                if (in_array($options, $key)) {
+                    $images_types[$key] = $value;
+                }
+            }
+        } else {
+            $images_types = config('hawkeye.images');
+        }
+
         $count = 0;
         foreach ($this->uploadedFiles['separated'] as $file) {
             $file_meta = explode('.', $file['original']);
@@ -92,7 +102,7 @@ class Hawkeye
             $directoryPath = $this->generateDirectoryPathFromName($hash);
             $file_name = $directoryPath . '/' . $file['original'];
 
-            foreach (config('hawkeye.images') as $key => $value) {
+            foreach ($images_types as $key => $value) {
                 $dimensions = explode('x', $value);
 
                 $scaled_image_name = $hash . '_' . $dimensions[0] . '_' . $dimensions[1] . '.' . $file_meta[1];
