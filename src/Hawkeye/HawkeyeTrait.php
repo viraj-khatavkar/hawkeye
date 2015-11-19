@@ -5,7 +5,7 @@ use Viraj\Hawkeye\Exceptions\InvalidMd5HashException;
 
 trait HawkeyeTrait
 {
-    public function generateFullImagePath($image_name)
+    public function generateFullImagePathFor($image_name)
     {
         $file = explode('.', $image_name);
         $file_meta = explode('_', $file[0]);
