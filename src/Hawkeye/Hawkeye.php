@@ -87,7 +87,7 @@ class Hawkeye
     {
         if (count($options) > 0) {
             foreach (config('hawkeye.images') as $key => $value) {
-                if (in_array($options, $key)) {
+                if (in_array($key, $options)) {
                     $images_types[$key] = $value;
                 }
             }
