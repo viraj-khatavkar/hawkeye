@@ -27,7 +27,7 @@ class MigrationCommand extends Command
     {
         $filesTable = 'hawkeye';
 
-        $this->laravel->view->addNamespace('hawkeye', substr(__DIR__, 0, -8).'views');
+        $this->laravel->view->addNamespace('hawkeye', substr(__DIR__, 0, -8) . 'views');
 
         $this->line('');
 
@@ -44,7 +44,7 @@ class MigrationCommand extends Command
                 $this->info("Migration successfully created!");
             } else {
                 $this->error(
-                    "Couldn't create migration.\n Check the write permissions".
+                    "Couldn't create migration.\n Check the write permissions" .
                     " within the app/database/migrations directory."
                 );
             }
@@ -62,7 +62,7 @@ class MigrationCommand extends Command
      */
     protected function createMigration($filesTable)
     {
-        $migrationFile = base_path("/database/migrations")."/".date('Y_m_d_His')."_hawkeye_setup_tables.php";
+        $migrationFile = base_path("/database/migrations") . "/" . date('Y_m_d_His') . "_hawkeye_setup_tables.php";
 
         $data = compact('filesTable');
 
@@ -71,6 +71,7 @@ class MigrationCommand extends Command
         if (!file_exists($migrationFile) && $fs = fopen($migrationFile, 'x')) {
             fwrite($fs, $output);
             fclose($fs);
+
             return true;
         }
 

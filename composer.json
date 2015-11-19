@@ -9,7 +9,8 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.0"

@@ -30,11 +30,11 @@ class Upload
         if ($this->isUploadedFile($this->uploadedFile)) {
 
             $fileData = [
-                'name' => $this->originalFile->getFilename(),
-                'extension' => $this->originalFile->getExtension(),
-                'size' => $this->uploadedFile->getSize(),
-                'ip' => $_SERVER['REMOTE_ADDR'],
-                'uploaded_at' => date('Y-m-d H:i:s')
+                'name'        => $this->originalFile->getFilename(),
+                'extension'   => $this->originalFile->getExtension(),
+                'size'        => $this->uploadedFile->getSize(),
+                'ip'          => $_SERVER['REMOTE_ADDR'],
+                'uploaded_at' => date('Y-m-d H:i:s'),
             ];
 
             $this->hashedFileName = $this->fileRepository->storeFileAndGetName($fileData);

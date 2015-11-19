@@ -1,7 +1,7 @@
 <?php namespace Viraj\Hawkeye;
 
-use Viraj\Hawkeye\Contracts\FileRepositoryInterface;
 use Illuminate\Support\Facades\DB;
+use Viraj\Hawkeye\Contracts\FileRepositoryInterface;
 
 class FileRepository implements FileRepositoryInterface
 {

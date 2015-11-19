@@ -37,11 +37,11 @@ class UploadedFile extends \SplFileInfo
     {
         if ($this->isUploadedFile($this)) {
             $fileData = [
-                'name' => $this->originalFileObject->getFilename(),
-                'extension' => $this->originalFileObject->getExtension(),
-                'size' => $_FILES[$this->originalFile]["size"],
-                'ip' => $_SERVER['REMOTE_ADDR'],
-                'uploaded_at' => date('Y-m-d H:i:s')
+                'name'        => $this->originalFileObject->getFilename(),
+                'extension'   => $this->originalFileObject->getExtension(),
+                'size'        => $_FILES[$this->originalFile]["size"],
+                'ip'          => $_SERVER['REMOTE_ADDR'],
+                'uploaded_at' => date('Y-m-d H:i:s'),
             ];
 
             $this->createDirectory(
@@ -50,7 +50,8 @@ class UploadedFile extends \SplFileInfo
                 )
             );
             $this->move($this->directoryPath, $this->hashedFileName);
-            return $this->fileRepo->fileName.".".$this->originalFileObject->getExtension();
+
+            return $this->fileRepo->fileName . "." . $this->originalFileObject->getExtension();
         } else {
             throw new InvalidUploadedFileException("Invalid Upload request. File not uploaded via HTTP POST method");
         }
@@ -76,7 +77,7 @@ class UploadedFile extends \SplFileInfo
      */
     private function move($path, $fileName)
     {
-        $fullPathForFile = $path.'/'.$fileName.'.'.$this->original()->getExtension();
+        $fullPathForFile = $path . '/' . $fileName . '.' . $this->original()->getExtension();
 
         if (!move_uploaded_file($this, $fullPathForFile)) {
             throw new FileNotUploadedException("Unable to move uploaded file to destination folder.");
