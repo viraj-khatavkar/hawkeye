@@ -103,6 +103,7 @@ class Hawkeye
                      ->save($scaled_image_path);
 
                 $this->uploadedFiles['separated'][$count][$key] = $scaled_image_name;
+                array_push($this->uploadedFiles['list'], $scaled_image_name);
             }
             $count++;
         }
