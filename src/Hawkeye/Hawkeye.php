@@ -83,7 +83,7 @@ class Hawkeye
         return $this;
     }
 
-    public function scaleImages($options = [])
+    public function resize($options = [])
     {
         if (count($options) > 0) {
             foreach (config('hawkeye.images') as $key => $value) {
