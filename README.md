@@ -46,6 +46,23 @@ After the migration, one new table will be present:
 You need to publish the configuration for this package to further customize the storage path of files. 
 Just use `php artisan vendor:publish` and a `hawkeye.php` file will be created in your `app/config` directory.
 
+### Configuration file
+
+A typical `Hawkeye` configuration file should look like as follows:
+
+```
+<?php
+
+return [
+    'hawkeye_base_path' => 'images/',
+    'images' => [
+        'banner' => '1200x800',
+        'thumbnail' => '300x200',
+        'large' => '600x500',
+    ],
+];
+```
+
 ### Base directory configuration
 
 Setup the base directory in `config/hawkeye.php` where your files will be stored.
@@ -150,9 +167,10 @@ array (size=2)
 The above response has 2 parameters:
 
 `list` - It has a list of all files that have been uploaded and resized.
+
 `separated` - It has a segregated/separated list of all uploaded files and resized images as well, if any!
 
-Sometimes, you don't want to resize your images in all the types. Don't worry, Hawkeye does that too. Specify the name of `imagetypes` you want the uploaded images to be resized into in `resize()` method and Hawkeye will resize into those types only.
+Sometimes, you don't want to resize your images in all the types specified in configuration. Don't worry, Hawkeye has a provision for that as well. Specify the name of `imagetypes` you want the uploaded images to be resized into in `resize()` method and Hawkeye will resize into those types only.
 
 ```php
 <?php
@@ -194,9 +212,9 @@ array (size=2)
 
 ## generateFullImagePath()
 
-This function returns the full image path for a particular hashed name with extension. It works as follows:
+This function returns the full image path for a particular file name (hashed) with extension.
 
-### Example 1
+### Example 1 (Resized image - It has dimesnions appended to the name)
 
 ```
     Hawkeye::generateFullImagePathFor('45c48cce2e2d7fbdea1afc51c7c6ad26_1200_200.jpg')
@@ -205,7 +223,7 @@ This function returns the full image path for a particular hashed name with exte
     "images/45c/48c/ce2/e2d/7fb/dea/1af/c51/c7c/6ad/45c48cce2e2d7fbdea1afc51c7c6ad26_1200_200.jpg"
 ```
 
-### Example 2
+### Example 2 (Original image - It has original name)
 
 ```
     Hawkeye::generateFullImagePathFor('45c48cce2e2d7fbdea1afc51c7c6ad26.jpg')
