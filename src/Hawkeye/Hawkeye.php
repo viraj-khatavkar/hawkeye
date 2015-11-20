@@ -9,7 +9,6 @@ class Hawkeye
 
     private $files;
     private $uploadedFiles;
-    private $processedFiles;
 
     public function request($filename)
     {
@@ -36,10 +35,10 @@ class Hawkeye
         foreach ($fileObjects as $fileObject) {
             $upload = new Upload($fileObject['uploaded'], $fileObject['original'], new FileRepository());
 
-            $name = $upload->upload();
+            $hashedName = $upload->upload();
 
-            $this->uploadedFiles['list'][$count] = $name;
-            $this->uploadedFiles['separated'][]['original'] = $name;
+            $this->uploadedFiles['list'][$count] = $hashedName;
+            $this->uploadedFiles['separated'][]['original'] = $hashedName;
 
             $count++;
         }
@@ -66,6 +65,12 @@ class Hawkeye
         return $fileObjects;
     }
 
+    /**
+     * Normalized the $_FILES array.
+     *
+     * @param $argument
+     * @return $this
+     */
     private function normalize($argument)
     {
         if (is_array($argument['name'])) {
@@ -85,6 +90,11 @@ class Hawkeye
 
     public function resize($options = [])
     {
+        /**
+         * Looping through all the image types of configuration and setting the image types as specified in options
+         * array. If options array is empty, then all the image types from configuration will be considered. These
+         * image types array will be then used to decide the resize dimensions for an uploaded image.
+         */
         if (count($options) > 0) {
             foreach (config('hawkeye.images') as $key => $value) {
                 if (in_array($key, $options)) {
@@ -96,12 +106,17 @@ class Hawkeye
         }
 
         $count = 0;
+
+        //Looping through all the uploaded files to resize them
         foreach ($this->uploadedFiles['separated'] as $file) {
+
+            //Retrieving file extension, hashed_name, directory path to create a new name for resized image.
             $file_meta = explode('.', $file['original']);
             $hash = $file_meta[0];
             $directoryPath = $this->generateDirectoryPathFromName($hash);
             $file_name = $directoryPath . '/' . $file['original'];
 
+            //Looping through all the image types for which image needs to be resized.
             foreach ($images_types as $key => $value) {
                 $dimensions = explode('x', $value);
 
@@ -124,5 +139,15 @@ class Hawkeye
     public function get()
     {
         return $this->uploadedFiles;
+    }
+
+    public function getList()
+    {
+        return $this->uploadedFiles['list'];
+    }
+
+    public function getSeparated()
+    {
+        return $this->uploadedFiles['separated'];
     }
 }
