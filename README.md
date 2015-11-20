@@ -50,7 +50,7 @@ Just use `php artisan vendor:publish` and a `hawkeye.php` file will be created i
 
 A typical `Hawkeye` configuration file should look like as follows:
 
-```
+```php
 <?php
 
 return [
@@ -169,6 +169,40 @@ The above response has 2 parameters:
 `list` - It has a list of all files that have been uploaded and resized.
 
 `separated` - It has a segregated/separated list of all uploaded files and resized images as well, if any!
+
+## getList()
+
+If you only want the list of all uploaded and resized files without the data about image type, you can use `getList()` method as follows:
+
+```php
+<?php
+
+use Viraj\Hawkeye\HawkeyeFacade as Hawkeye;
+
+public function uploadFile()
+{
+    $files = Hawkeye::upload('file_upload')->resize()->getList();
+    var_dump($files);
+}
+```
+
+The 
+
+```php
+
+array (size=8)
+      0 => string 'd67d8ab4f4c10bf22aa353e27879133c.png' (length=36)
+      1 => string 'd645920e395fedad7bbbed0eca3fe2e0.png' (length=36)
+      2 => string 'd67d8ab4f4c10bf22aa353e27879133c_1200_800.png' (length=45)
+      3 => string 'd67d8ab4f4c10bf22aa353e27879133c_300_200.png' (length=44)
+      4 => string 'd67d8ab4f4c10bf22aa353e27879133c_600_500.png' (length=44)
+      5 => string 'd645920e395fedad7bbbed0eca3fe2e0_1200_800.png' (length=45)
+      6 => string 'd645920e395fedad7bbbed0eca3fe2e0_300_200.png' (length=44)
+      7 => string 'd645920e395fedad7bbbed0eca3fe2e0_600_500.png' (length=44)
+
+```
+
+## Resizing for specific image types
 
 Sometimes, you don't want to resize your images in all the types specified in configuration. Don't worry, Hawkeye has a provision for that as well. Specify the name of `image types` you want the uploaded images to be resized into in `resize()` method and Hawkeye will resize into those types only.
 
