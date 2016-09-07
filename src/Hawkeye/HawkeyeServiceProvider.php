@@ -29,7 +29,7 @@ class HawkeyeServiceProvider extends ServiceProvider
             return new Hawkeye();
         });
 
-        $this->app->bindShared('command.hawkeye.migration', function ($app) {
+        $this->app->singleton('command.hawkeye.migration', function ($app) {
             return new \Viraj\Hawkeye\commands\MigrationCommand();
         });
     }
